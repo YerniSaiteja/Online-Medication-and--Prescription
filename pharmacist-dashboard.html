@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare - Pharmacist Dashboard</title>
+    <!-- Use the shared CSS -->
+    <link rel="stylesheet" href="patient-dashboard.css">
+    <!-- Add specific overrides if needed -->
+    <link rel="stylesheet" href="pharmacist-dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="light-mode">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="theme-icon">🌙</span>
+    </button>
+
+    <!-- Navigation Menu (Matching Patient/Doctor) -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="nav-logo-icon" aria-label="Brand">💊</div>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-page="dashboard">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="inventory">
+                        <span class="nav-icon">📦</span>
+                        <span class="nav-text">Inventory</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="orders">
+                        <span class="nav-icon">📝</span>
+                        <span class="nav-text">Orders</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="profile">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Profile</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="nav-user">
+                <div class="user-profile">
+                    <div class="user-avatar-small">PH</div>
+                    <div class="user-info">
+                        <span class="user-name" id="navUserName">Pharmacist</span>
+                        <span class="user-role">Pharmacist</span>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <span class="logout-icon">🚪</span>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+        <!-- Dashboard Page -->
+        <div class="page-content active" id="dashboard">
+            <div class="page-header">
+                <div class="header-content">
+                    <div>
+                        <h1>Dashboard</h1>
+                        <p>Overview of inventory status and orders</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card stat-card-primary">
+                    <div class="stat-icon-wrapper">
+                        <div class="stat-icon">📦</div>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Inventory</h3>
+                        <p class="stat-number" id="totalInventoryCount">0</p>
+                        <span class="stat-change">Items in stock</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-card-warning">
+                    <div class="stat-icon-wrapper">
+                        <div class="stat-icon">⚠️</div>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Expiring Soon</h3>
+                        <p class="stat-number warning" id="expiringCount">0</p>
+                        <span class="stat-change">Next 30 days</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-card-success">
+                    <div class="stat-icon-wrapper">
+                        <div class="stat-icon">📝</div>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Active Orders</h3>
+                        <p class="stat-number" id="pendingOrdersCount">0</p>
+                        <span class="stat-change">To fulfill</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Page -->
+        <div class="page-content" id="inventory">
+            <div class="page-header">
+                <h1>Inventory Management</h1>
+                <p>Track and update medication stock</p>
+            </div>
+
+            <div class="content-card">
+                <div class="card-header">
+                    <div class="search-wrapper">
+                        <input type="text" id="inventorySearch" class="search-input" placeholder="Search for drugs...">
+                    </div>
+                    <button class="btn-primary" id="addInventoryBtn">+ Add New</button>
+                </div>
+
+                <div class="inventory-list-container" id="inventoryList">
+                    <!-- Javascript will populate this -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Page -->
+        <div class="page-content" id="orders">
+            <div class="page-header">
+                <h1>Patient Orders</h1>
+                <p>View and manage incoming prescription orders</p>
+            </div>
+            <div class="content-card">
+                <div class="orders-list" id="ordersList">
+                    <p style="text-align:center; color:var(--text-muted); padding: 20px;">No active orders linked yet.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div class="page-content" id="profile">
+            <div class="page-header">
+                <h1>My Profile</h1>
+            </div>
+            <div class="profile-container">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar">PH</div>
+                        <div class="profile-info">
+                            <h2 id="profileName">Pharmacist Name</h2>
+                            <p>Pharmacist</p>
+                        </div>
+                    </div>
+                    <div class="info-grid user-details-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Add Item Modal -->
+    <div class="modal" id="addInventoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Drug</h2>
+                <button class="modal-close" id="closeAddModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addInventoryForm">
+                    <div class="form-group">
+                        <label>Drug Name</label>
+                        <input type="text" name="drugName" required class="form-input" placeholder="e.g. Asprin">
+                    </div>
+                    <div class="form-group">
+                        <label>Batch Number</label>
+                        <input type="text" name="batchNumber" required class="form-input" placeholder="e.g. BATCH123">
+                    </div>
+                    <div class="form-group">
+                        <label>Expiry Date</label>
+                        <input type="date" name="expiryDate" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" name="quantity" required class="form-input" placeholder="0">
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-secondary" id="cancelAdd">Cancel</button>
+                        <button type="submit" class="btn-primary">Add Drug</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Drug Details Modal -->
+    <div class="modal" id="drugDetailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="detailsDrugName">Drug Details</h2>
+                <button class="modal-close" id="closeDetailsModal">&times;</button>
+            </div>
+            <div class="modal-body" id="drugDetailsContent">
+                <!-- Populated by JS -->
+                <div class="drug-details-loading">Loading drug information...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="pharmacist-dashboard.js"></script>
+</body>
+
+</html>

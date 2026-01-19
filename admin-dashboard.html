@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare - Admin Dashboard</title>
+    <!-- Use shared CSS -->
+    <link rel="stylesheet" href="patient-dashboard.css">
+    <link rel="stylesheet" href="pharmacist-dashboard.css">
+    <link rel="stylesheet" href="admin-dashboard.css">
+    <!-- Add Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Admin Specific Styles */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            background: #18181b;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #27272a;
+        }
+    </style>
+</head>
+
+<body class="light-mode">
+    <button class="theme-toggle" id="themeToggle">
+        <span class="theme-icon">🌙</span>
+    </button>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="nav-logo-icon">🛡️</div>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-page="dashboard">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="analytics">
+                        <span class="nav-icon">📈</span>
+                        <span class="nav-text">Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="reports">
+                        <span class="nav-icon">📑</span>
+                        <span class="nav-text">Reports</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="profile">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Profile</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="nav-user">
+                <div class="user-profile">
+                    <div class="user-avatar-small">AD</div>
+                    <div class="user-info">
+                        <span class="user-name" id="navUserName">Admin</span>
+                        <span class="user-role">Administrator</span>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <span class="logout-icon">🚪</span>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Dashboard Overview -->
+        <div class="page-content active" id="dashboard">
+            <div class="page-header">
+                <h1>Admin Dashboard</h1>
+                <p>System overview and key metrics</p>
+            </div>
+
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card stat-card-primary">
+                    <div class="stat-icon-wrapper">
+                        <div class="stat-icon">👥</div>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Users</h3>
+                        <p class="stat-number" id="totalUsers">0</p>
+                    </div>
+                </div>
+                <div class="stat-card stat-card-success">
+                    <div class="stat-icon-wrapper">
+                        <div class="stat-icon">🩺</div>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Active Prescriptions</h3>
+                        <p class="stat-number" id="activePrescriptions">0</p>
+                    </div>
+                </div>
+                <div class="stat-card stat-card-warning">
+                    <div class="stat-icon-wrapper">
+                        <div class="stat-icon">⚠️</div>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Low Stock Items</h3>
+                        <p class="stat-number" id="lowStockItems">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div class="page-content" id="analytics">
+            <div class="app">
+                <!-- Header -->
+                <div class="header">
+                    <h2>Analytics</h2>
+                    <div class="tabs" id="analyticsTabs">
+                        <span data-role="patient" class="active">Patient</span>
+                        <span data-role="doctor">Doctor</span>
+                        <span data-role="pharmacy">Pharmacy</span>
+                        <span data-role="admin">Admin</span>
+                    </div>
+                </div>
+
+                <!-- Adherence Trends Card -->
+                <div class="card">
+                    <h3>Adherence Trends</h3>
+                    <p class="sub" id="analyticsTitle">Medication Adherence</p>
+
+                    <div class="percentage">
+                        <span id="analyticsPercentage">85%</span>
+                        <small class="green" id="analyticsChange">Last 30 Days +5%</small>
+                    </div>
+
+                    <canvas id="lineChart"></canvas>
+
+                    <div class="weeks">
+                        <span>Week 1</span>
+                        <span>Week 2</span>
+                        <span>Week 3</span>
+                        <span>Week 4</span>
+                    </div>
+                </div>
+
+                <!-- Prescription History -->
+                <div class="card">
+                    <h3>Prescription History</h3>
+                    <div id="analyticsHistoryList">
+                        <!-- Populated by JS -->
+                        <div class="list-item">
+                            <span>💊</span>
+                            <div>
+                                <p>Medication A</p>
+                                <small class="sub">2023-01-15</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation (Visual Only - kept for matching reference image) -->
+                <div class="bottom-nav">
+                    <span>🏠</span>
+                    <span class="active">📊</span>
+                    <span>📄</span>
+                    <span>👤</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Section -->
+        <div class="page-content" id="reports">
+            <div class="page-header">
+                <h1>Reports & Insights</h1>
+                <p>Pharmacy insights and downloadable reports</p>
+            </div>
+
+            <div class="content-card" style="margin-bottom: 20px;">
+                <div class="card-header">
+                    <h3>Pharmacy Insights</h3>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <h4>Top Selling Drugs</h4>
+                        <ul id="topDrugsList"
+                            style="list-style: none; padding: 0; margin-top: 10px; color: var(--text-secondary);">
+                            <li>Loading...</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Expiring Soon</h4>
+                        <ul id="expiringList"
+                            style="list-style: none; padding: 0; margin-top: 10px; color: var(--text-warning);">
+                            <li>Loading...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h3>Compliance & Audit</h3>
+                <p>Generate downloadable reports for system audits.</p>
+                <button class="btn-primary" id="downloadReportBtn" style="margin-top: 15px;">
+                    📥 Download Compliance Report (CSV)
+                </button>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="page-content" id="profile">
+            <div class="page-header">
+                <h1>Admin Profile</h1>
+            </div>
+            <div class="profile-container">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar">AD</div>
+                        <div class="profile-info">
+                            <h2 id="profileName">Admin Name</h2>
+                            <p>Administrator</p>
+                        </div>
+                    </div>
+                    <div class="info-grid user-details-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="admin-dashboard.js"></script>
+</body>
+
+</html>

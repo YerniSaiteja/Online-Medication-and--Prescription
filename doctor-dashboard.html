@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare - Doctor Dashboard</title>
+    <link rel="stylesheet" href="patient-dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body class="light-mode">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="theme-icon">🌙</span>
+    </button>
+
+    <!-- Navigation Menu -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="nav-logo-icon" aria-label="Brand">🩺</div>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-page="dashboard">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="patients">
+                        <span class="nav-icon">👥</span>
+                        <span class="nav-text">Patient Records</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="create-prescription">
+                        <span class="nav-icon">✏️</span>
+                        <span class="nav-text">Create Prescription</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="prescription-history">
+                        <span class="nav-icon">📜</span>
+                        <span class="nav-text">Prescription History</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="profile">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Profile</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="nav-user">
+                <div class="user-profile">
+                    <div class="user-avatar-small">DR</div>
+                    <div class="user-info">
+                        <span class="user-name">Doctor Name</span>
+                        <span class="user-role">Doctor</span>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <span class="logout-icon">🚪</span>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Dashboard Page -->
+        <div class="page-content active" id="dashboard">
+            <div class="page-header">
+                <div class="header-content">
+                    <div>
+                        <h1>Doctor Dashboard</h1>
+                        <p id="welcomeText">Good to see you, Doctor. Here's today’s overview.</p>
+                    </div>
+                    <div class="header-actions">
+                        <div class="date-display" id="currentDate"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card stat-card-primary">
+                    <div class="stat-icon-wrapper">
+                        <div class="stat-icon">👥</div>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Active Patients</h3>
+                        <p class="stat-number" id="activePatientsCount">24</p>
+                        <span class="stat-change positive">+3 this week</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-card-success">
+                    <div class="stat-icon-wrapper">
+                        <div class="stat-icon">📝</div>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Prescriptions Today</h3>
+                        <p class="stat-number" id="prescriptionsToday">8</p>
+                        <span class="stat-change">In progress</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-card-warning">
+                    <div class="stat-icon-wrapper">
+                        <div class="stat-icon">📅</div>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Upcoming Appointments</h3>
+                        <p class="stat-number" id="upcomingAppointments">5</p>
+                        <span class="stat-change">Next in 30 mins</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-card-info">
+                    <div class="stat-icon-wrapper">
+                        <div class="stat-icon">⚠️</div>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Alerts</h3>
+                        <p class="stat-number" id="alertsCount">2</p>
+                        <span class="stat-change">High priority</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2>Today’s Appointments</h2>
+                    </div>
+                    <div class="prescription-list">
+                        <div class="prescription-item">
+                            <div class="prescription-item-icon">👤</div>
+                            <div class="prescription-item-content">
+                                <div class="prescription-name">John Doe</div>
+                                <div class="prescription-details">
+                                    <span class="doctor-name">09:00 AM</span>
+                                    <span class="prescription-date">General Checkup</span>
+                                </div>
+                            </div>
+                            <div class="prescription-status-badge active">Scheduled</div>
+                        </div>
+                        <div class="prescription-item">
+                            <div class="prescription-item-icon">👤</div>
+                            <div class="prescription-item-content">
+                                <div class="prescription-name">Sarah Johnson</div>
+                                <div class="prescription-details">
+                                    <span class="doctor-name">09:45 AM</span>
+                                    <span class="prescription-date">Follow-up</span>
+                                </div>
+                            </div>
+                            <div class="prescription-status-badge active">Scheduled</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2>Recent Prescriptions</h2>
+                        <a href="#" class="view-all-link"
+                            onclick="document.querySelector('[data-page=prescription-history]').click(); return false;">View
+                            All →</a>
+                    </div>
+                    <div class="prescription-list" id="recentPrescriptions">
+                        <div class="prescription-item">
+                            <div class="prescription-item-icon">💊</div>
+                            <div class="prescription-item-content">
+                                <div class="prescription-name">Paracetamol 500mg</div>
+                                <div class="prescription-details">
+                                    <span class="doctor-name">Patient: John Doe</span>
+                                    <span class="prescription-date">Today • 08:30 AM</span>
+                                </div>
+                            </div>
+                            <div class="prescription-status-badge active">Active</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Patient Records Page -->
+        <div class="page-content" id="patients">
+            <div class="page-header">
+                <h1>Patient Records</h1>
+                <p>Search and review your patients’ medical records</p>
+            </div>
+
+            <div class="content-card">
+                <div class="card-header">
+                    <div class="search-wrapper">
+                        <input type="text" id="patientSearch" class="search-input" placeholder="Search by name or ID">
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="patientsTable">
+                        <thead>
+                            <tr>
+                                <th>Patient ID</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Condition</th>
+                                <th>Last Visit</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>PAT-2024-001</td>
+                                <td>John Doe</td>
+                                <td>34</td>
+                                <td>Hypertension</td>
+                                <td>15 Mar 2024</td>
+                                <td><button class="btn-secondary btn-small view-record-btn">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>PAT-2024-002</td>
+                                <td>Sarah Johnson</td>
+                                <td>42</td>
+                                <td>Type 2 Diabetes</td>
+                                <td>12 Mar 2024</td>
+                                <td><button class="btn-secondary btn-small view-record-btn">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>PAT-2024-003</td>
+                                <td>Michael Smith</td>
+                                <td>29</td>
+                                <td>Asthma</td>
+                                <td>10 Mar 2024</td>
+                                <td><button class="btn-secondary btn-small view-record-btn">View</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Prescription Page -->
+        <div class="page-content" id="create-prescription">
+            <div class="page-header">
+                <h1>Medication & Prescription Tracker</h1>
+                <p>Saved locally in this browser</p>
+            </div>
+
+            <div class="content-card">
+                <div class="prescription-form-section">
+                    <h2 class="form-section-title">Add / Edit Medication</h2>
+                    <form id="createPrescriptionForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="patientId">Patient ID</label>
+                                <input type="text" id="patientId" placeholder="e.g. 00005" pattern="\d{5}" maxlength="5"
+                                    inputmode="numeric" required>
+                                <small style="color:var(--text-muted); font-size:12px;">Enter the 5-digit Patient
+                                    ID</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="patientName">Patient Name</label>
+                                <input type="text" id="patientName" placeholder="e.g. John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="medicineName">Medicine Name</label>
+                                <input type="text" id="medicineName" list="medicineList"
+                                    placeholder="Search available medicines..." autocomplete="off">
+                                <datalist id="medicineList">
+                                    <!-- Populated by JS -->
+                                </datalist>
+                            </div>
+                            <div class="form-group">
+                                <label for="doseFrequency">Dose / Frequency</label>
+                                <input type="text" id="doseFrequency" placeholder="e.g. 1 tablet; 3x/day"
+                                    value="1 tablet; 3x/day">
+                            </div>
+                            <div class="form-group form-group-full">
+                                <label for="notesInstructions">Notes / Instructions</label>
+                                <textarea id="notesInstructions" rows="3"
+                                    placeholder="Add any notes or special instructions">After food, store in cool place...</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="startDate">Start date</label>
+                                <input type="date" id="startDate" value="2024-04-24">
+                            </div>
+                            <div class="form-group">
+                                <label for="endDate">End date (optional)</label>
+                                <input type="date" id="endDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select id="status">
+                                    <option value="Active" selected>Active</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">Add Medicine</button>
+                            <button type="reset" class="btn-secondary">Reset</button>
+                            <button type="button" class="btn-secondary" id="clearFormBtn">Clear</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prescription History Page -->
+        <div class="page-content" id="prescription-history">
+            <div class="page-header">
+                <h1>Prescription History</h1>
+                <p>Review and export prescriptions you have created</p>
+            </div>
+
+            <div class="content-card">
+                <div class="card-header">
+                    <div class="search-wrapper">
+                        <input type="text" id="prescriptionSearch" class="search-input"
+                            placeholder="Search by patient or medication">
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="prescriptionsTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Patient</th>
+                                <th>Medication</th>
+                                <th>Dosage</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="prescriptionsTableBody">
+                            <tr>
+                                <td>15 Mar 2024</td>
+                                <td>John Doe</td>
+                                <td>Paracetamol 500mg</td>
+                                <td>1 tablet, 3x daily</td>
+                                <td><span class="prescription-status active">Active</span></td>
+                                <td><button class="btn-secondary btn-small download-prescription">Download</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div class="page-content" id="profile">
+            <div class="page-header">
+                <h1>My Profile</h1>
+                <p>Manage your professional information and preferences</p>
+            </div>
+
+            <div class="profile-container">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar">DR</div>
+                        <div class="profile-info">
+                            <h2 id="profileName">Doctor Name</h2>
+                            <p id="profileSpecialization">Specialization: General Medicine</p>
+                        </div>
+                    </div>
+
+                    <div class="profile-section">
+                        <h3>Professional Details</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Full Name</label>
+                                <p id="infoFullName">Doctor Name</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Email</label>
+                                <p id="infoEmail">doctor@example.com</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Phone</label>
+                                <p id="infoPhone">+1 (555) 000-0000</p>
+                            </div>
+                            <div class="info-item">
+                                <label>License Number</label>
+                                <p id="infoLicense">LIC-000000</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Specialization</label>
+                                <p id="infoSpec">General Medicine</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="doctor-dashboard.js"></script>
+</body>
+
+</html>

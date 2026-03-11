@@ -11,9 +11,9 @@ const isDevelopment = window.location.hostname === 'localhost' || window.locatio
 // - If using Railway: 'https://your-app-name.railway.app'
 // - If using Render: 'https://your-app-name.onrender.com'
 // - If using a custom domain: 'https://api.yourdomain.com'
-const API_BASE_URL = isDevelopment 
-    ? 'http://localhost:5000' 
-    : (window.API_BASE_URL || 'https://your-backend-url.herokuapp.com'); // Replace with your actual backend URL
+const API_BASE_URL = isDevelopment
+    ? 'http://localhost:5000'
+    : window.location.origin;
 
 // Export the configuration
 window.API_CONFIG = {
@@ -22,7 +22,7 @@ window.API_CONFIG = {
 };
 
 // Helper function to get the full API URL for an endpoint
-window.getApiUrl = function(endpoint) {
+window.getApiUrl = function (endpoint) {
     // Remove leading slash if present to avoid double slashes
     const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
     return `${API_BASE_URL}/api/${cleanEndpoint}`;

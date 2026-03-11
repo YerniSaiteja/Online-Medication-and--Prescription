@@ -13,7 +13,14 @@ from flask import send_file
 app = Flask(__name__)
 # Get the directory where this script is located
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(basedir, "medication.db")}'
+
+# If running on Vercel, use the /tmp directory because the rest of the filesystem is read-only
+if os.environ.get('VERCEL') == '1':
+    db_path = '/tmp/medication.db'
+else:
+    db_path = os.path.join(basedir, "medication.db")
+
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
 

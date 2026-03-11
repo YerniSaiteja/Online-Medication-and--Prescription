@@ -1,0 +1,17 @@
+{
+    "liveServer.settings.port": 5501,
+    "sqltools.connections": [
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "PG LOCAL",
+            "database": "medication_tracker",
+            "username": "postgres",
+            "password": "12345",
+            "connectionTimeout": 30
+        }
+    ]
+}

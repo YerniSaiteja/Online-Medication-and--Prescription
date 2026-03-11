@@ -2,7 +2,11 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from datetime import datetime, timedelta, date, time
 import os
-from models import db, User, Prescription, Reminder, InventoryItem
+import sys
+
+# Add the directory containing app.py to sys.path so Vercel can find models.py
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from models import db, User, Prescription, Reminder, InventoryItem
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import func, case
